@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  /* Reset default styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Chatbox container */
+  .chatbox {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background-color: #f5f5f5;
+  }
+
+  /* Chatbox header */
+  .chatbox-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    background-color: #333;
+    color: #fff;
+    font-size: 24px;
+  }
+
+  /* Chatbox body */
+  .chatbox-body {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  /* Chat messages list */
+  .chat-messages {
+    list-style-type: none;
+    padding: 10px;
+  }
+
+  /* Chat message */
+  .chat-message {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    max-width: 80%;
+  }
+
+  /* Chatbox footer */
+  .chatbox-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    background-color: #f5f5f5;
+  }
+
+  /* Chat input */
+  .chat-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  /* Chat send button */
+  .chat-send-button {
+    margin-left: 10px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .chatbox {
+      flex-direction: column;
+    }
+
+    .chatbox-header {
+      height: 40px;
+      font-size: 18px;
+    }
+
+    .chatbox-body {
+      height: calc(100vh - 100px);
+    }
+
+    .chatbox-footer {
+      height: 50px;
+    }
+
+    .chat-input {
+      font-size: 14px;
+    }
+
+    .chat-send-button {
+      font-size: 14px;
+    }
+
+    css .chatbox-header {
+      background-color: #2980b9;
+    }
+
+    css .chat-message {
+      background-color: #3498db;
+    }
+  }
+
+  .opponent-message {
+    background-color: #e74c3c;
+  }
+
+  .chat-message {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    max-width: 80%;
+  }
+
+  .chat-message.opponent-message {
+    background-color: #e74c3c;
+    color: #fff;
+  }
+
+  .chat-message.user-message {
+    background-color: #2ecc71;
+    color: #fff;
+  }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    order: 2;
+  }
+
+  .chat-messages {
+    order: 1;
+    margin-left: auto;
+  }
+
+  .chat-message {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 80%;
+    margin-bottom: 10px;
+  }
+
+  .chat-message.user-message {
+    background-color: #2ecc71;
+    color: #fff;
+    align-self: flex-end;
+  }
+
+  .chat-message.opponent-message {
+    background-color: #e74c3c;
+    color: #fff;
+    align-self: flex-start;
+  }
+
+  .chat-message:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+
+  .chat-message.user-message:after {
+    border-width: 10px 10px 0 0;
+    border-color: #2ecc71 transparent transparent transparent;
+    right: -10px;
+    top: 10px;
+  }
+
+  .chat-message.opponent-message:after {
+    border-width: 0 10px 10px 0;
+    border-color: transparent transparent #e74c3c transparent;
+    left: -10px;
+    top: 10px;
+  }
+
+  .chat-message.user-message:after {
+    border-width: 10px 10px 0 0;
+    border-color: #2ecc71 transparent transparent transparent;
+    left: -10px;
+    top: 10px;
+  }
+
+  .chat-message.opponent-message:after {
+    border-width: 0 10px 10px 0;
+    border-color: transparent transparent #e74c3c transparent;
+    right: -10px;
+    top: 10px;
+  }
+</style>
+
+<body>
+
+
+  <div class="chatbox">
+    <div class="chatbox-header">
+      <h2>Chat</h2>
+    </div>
+    <div class="chatbox-body">
+      <ul class="chat-messages">
+        <!-- Chat messages will be displayed here -->
+
+      </ul>
+    </div>
+    <div class="chatbox-footer">
+      <input type="text" class="chat-input" placeholder="Type your message...">
+      <button class="chat-send-button">Send</button>
+    </div>
+  </div>
+
+  <script>
+    // Initialize the chatbox
+    const chatbox = document.querySelector('.chatbox');
+    const chatMessages = chatbox.querySelector('.chat-messages');
+    const chatInput = chatbox.querySelector('.chat-input');
+    const chatSendButton = chatbox.querySelector('.chat-send-button');
+
+    // Add event listener for sending messages
+    chatSendButton.addEventListener('click', () => {
+      // Get the message from the input field
+      const message = chatInput.value;
+
+      // Clear the input field
+      chatInput.value = '';
+
+      // Create a new message element
+      const messageElement = document.createElement('li');
+      messageElement.classList.add('chat-message', 'user-message');
+
+      messageElement.textContent = message;
+
+      // Add the message to the chat messages list
+      chatMessages.appendChild(messageElement);
+    });
+
+    // Add event listener for typing messages
+    chatInput.addEventListener('keyup', (event) => {
+      if (event.key === 'Enter') {
+        // Send the message when Enter key is pressed
+        chatSendButton.click();
+      }
+    });
+
+    
+
+  </script>
+
+
+</body>
+
+</html>
